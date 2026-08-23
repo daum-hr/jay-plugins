@@ -1,0 +1,14 @@
+{
+  "name": "jay-plugins",
+  "owner": {
+    "name": "jay"
+  },
+  "description": "비개발자를 위한 바이브코딩 도구 모음 배포처.",
+  "plugins": [
+    {
+      "name": "jay-skills",
+      "source": "./plugins/jay-skills",
+      "description": "비개발자를 위한 바이브코딩 도우미 — 개발환경 첫 설정, git/GitHub 사용, 쉬운 리포트 방식."
+    }
+  ]
+}
