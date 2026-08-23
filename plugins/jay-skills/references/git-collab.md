@@ -38,7 +38,7 @@ git 계열 스킬(`status` `github-login` `push` `pull` `fix-conflict` `undo` `p
 | fetch | 목록만 확인 — 받아오기 전에 "새 게 있나"만 살펴보는 것 (보통 사용자에게 안 보임) |
 | branch | 갈래 — 다른 사람 작업을 건드리지 않고 내 작업만 따로 담아두는 공간 |
 | main | 모두가 함께 쓰는 갈래 — 팀의 최종본. 여기에 바로 올리지 않고, 확인을 거쳐 합친다 |
-| remote / origin | 팀 저장소 — 회사 GitHub에 있는 공용 보관소. 별명이 `origin` |
+| remote / origin | 팀 저장소 — 회사 GitHub에 있는 공용 보관소. 별명이 `origin`. 주소가 `github.com`일 수도, 회사 자체 서버(`github.<회사>.com`)일 수도 있다 |
 | upstream | 짝 — 내 갈래가 팀 저장소의 어느 갈래와 이어져 있는지 |
 | merge | 합치기 — 두 갈래의 작업을 하나로 모으는 것 |
 | conflict | 충돌 — 같은 파일 같은 부분을 나와 동료가 다르게 고쳐서, 어느 쪽을 남길지 사람이 정해야 하는 상태. **고장이 아니다** |
@@ -103,9 +103,14 @@ git 계열 스킬(`status` `github-login` `push` `pull` `fix-conflict` `undo` `p
 ## 4. `gh` (GitHub 명령 도구) 확인 순서
 
 ```bash
-command -v gh          # 설치돼 있나
-gh auth status         # 로그인돼 있나
+command -v gh                          # 설치돼 있나
+gh auth status --hostname <목표 서버>   # 그 서버에 로그인돼 있나
 ```
+
+**목표 서버는 `github.com`으로 가정하지 않는다.** 회사가 자체 GitHub 서버를 운영하면
+저장소 주소가 `github.<회사>.com` 이고 그 서버와 github.com은 별개다. 목표 서버는
+`git remote get-url origin` 의 호스트 부분이며, origin이 없을 때만 `github.com` 이다.
+저장소 폴더 *안에서* 실행하는 `gh pr` 같은 명령은 주소를 보고 서버를 알아서 찾는다.
 
 둘 중 하나라도 실패하면 그 자리에서 진단하지 말고 이 문장으로 넘긴다:
 

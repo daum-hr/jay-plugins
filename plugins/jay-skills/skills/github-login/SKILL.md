@@ -29,18 +29,28 @@ SSH 키를 만들거나 토큰을 손으로 발급받는 길은 **안내하지 �
 
 ### Step 1: 조용히 확인
 
+**먼저 목표 서버를 정한다.** `github.com`을 가정하지 않는다 — 회사가 자체 GitHub 서버를
+운영하면 저장소 주소가 `github.<회사>.com` 이고, 그 서버와 github.com은 **완전히 별개**다.
+목표 서버는 저장소 주소에서 나온다:
+
 ```bash
-git remote get-url origin 2>&1
-command -v gh >/dev/null && echo gh-ok || echo gh-missing
-gh auth status 2>&1
-gh auth status --hostname github.com 2>&1
-gh api user --jq .login 2>/dev/null
+ORIGIN=$(git remote get-url origin 2>/dev/null)
+# https://<호스트>/... 또는 git@<호스트>:... 에서 <호스트>를 뽑는다.
+# origin이 없으면 목표 서버 = github.com
+HOST=<뽑은 값, 없으면 github.com>
 ```
 
-**호스트를 반드시 나눠서 본다.** `gh auth status`는 등록된 *모든* 서버를 보여주는데,
-회사 자체 GitHub 서버(예: `github.<회사>.com`)에 로그인돼 있어도 **github.com은 별개**다.
-`--hostname github.com` 결과가 "not logged into"면, 다른 서버 로그인이 아무리 멀쩡해도
-github.com 작업은 안 된다. 실제로 마주친 사례라 이 확인을 생략하지 않는다.
+이후 이 문서의 모든 `gh` 명령에 `--hostname $HOST` 를 붙인다. 아래 프로브도 마찬가지다:
+
+```bash
+command -v gh >/dev/null && echo gh-ok || echo gh-missing
+gh auth status 2>&1                      # 등록된 모든 서버 (전체 그림)
+gh auth status --hostname $HOST 2>&1     # 목표 서버만 (판단 근거)
+gh api user --hostname $HOST --jq .login 2>/dev/null
+```
+
+**판단은 반드시 `--hostname $HOST` 결과로 한다.** `gh auth status`만 보면 다른 서버에
+로그인돼 있는 것을 "로그인됨"으로 오판한다 — 실제로 마주친 사례다.
 
 팀 저장소 주소가 없으면 이건 인증 문제가 아니다 → `/jay-skills:push`(주소를 물어봄)
 또는 `/jay-skills:welcome`으로 넘기고 끝낸다.
@@ -52,9 +62,10 @@ github.com 작업은 안 된다. 실제로 마주친 사례라 이 확인을 생
 | 상황 | 사용자에게 하는 말 | 다음 |
 |---|---|---|
 | `gh` 미설치 | "GitHub 연결을 도와주는 작은 프로그램(`gh`)이 아직 없어요. 설치는 시스템 권한이 필요해서 제가 대신 못 해드려요. **Mac**: 터미널에 `brew install gh` (brew가 없으면 https://cli.github.com 에서 설치 파일) / **Windows**: `winget install GitHub.cli`. 설치 후 `/jay-skills:github-login`을 다시 실행해 주세요." | 여기서 종료 (마무리 카드) |
-| `gh` 있음, github.com 미로그인 | "로그인만 하면 돼요. 브라우저 한 번 여는 걸로 끝납니다." | Step 3 |
-| 다른 서버(회사 자체 GitHub)에만 로그인돼 있음 | "지금은 회사 서버 `{호스트}` 에만 로그인돼 있어요. github.com은 그것과 별개라 따로 로그인해야 합니다. 기존 로그인은 **그대로 두고 추가**로 등록할게요 — 하나를 지우고 바꾸는 게 아니에요." | Step 3 |
-| 다른 서버 로그인이 오류·시간초과 (사내망/VPN 필요 등) | 그 오류는 **지금 하려는 일과 무관**하다. "회사 서버에 연결이 안 된다는 메시지가 같이 보이는데, 지금 하려는 github.com 작업과는 상관없어요. 그대로 두고 진행합니다." 회사 서버 문제를 고치려 들지 않는다. | Step 3 |
+| `gh` 있음, 목표 서버 미로그인 | "로그인만 하면 돼요. 브라우저 한 번 여는 걸로 끝납니다." | Step 3 |
+| **목표 서버에 연결 자체가 안 됨** (`i/o timeout` · `dial tcp` · `could not resolve host`) | **인증 문제가 아니라 네트워크 문제다.** 이걸 구분해 주지 않으면 사용자는 로그인만 계속 재시도한다. "`{호스트}` 서버에 연결 자체가 안 되고 있어요. 로그인 문제가 아니라 **회사 내부망에 연결돼 있지 않아서**일 가능성이 큽니다. 회사 VPN을 켜신 다음 다시 실행해 주세요." | 여기서 종료 |
+| 목표 서버는 멀쩡한데 *다른* 서버 로그인에 오류가 섞여 보임 | 그 오류는 **지금 하려는 일과 무관**하다. "다른 서버에 연결이 안 된다는 메시지가 같이 보이는데, 지금 하려는 `{호스트}` 작업과는 상관없어요. 그대로 두고 진행합니다." 그 서버를 고치려 들지 않는다. | Step 3 |
+| 여러 서버가 등록돼 있음 | 지우고 바꾸는 게 아니라 **추가**임을 반드시 말한다: "기존 로그인은 그대로 두고 `{호스트}` 만 추가로 등록할게요." | Step 3 |
 | 비밀번호 거부 / `Authentication failed` / 401 | "GitHub은 2021년부터 계정 비밀번호로는 안 받아요. 대신 이 컴퓨터용 출입증(personal access token — 개인 접근 토큰)이 필요한데, 직접 만드실 필요 없이 브라우저 로그인 한 번으로 자동 발급됩니다." | Step 3 |
 | 403인데 로그인은 돼 있음 | `gh api user`로 확인한 계정을 보여주고: "지금 `{계정}` 계정으로 로그인돼 있어요. 이 계정이 회사 저장소에 초대돼 있나요?" ① 개인 계정으로 로그인함 → Step 3(회사 계정으로 다시) ② 계정은 맞음 → 아래 에스컬레이션 | 갈림 |
 | 403 + 계정 맞음 (권한 없음) | 저장소를 만든 사람(관리자)에게 초대를 받아야 한다. 복사해서 그대로 보낼 수 있는 문장을 준다: "저장소 `{owner/repo}` 에 제 GitHub 계정 `{계정}` 을 write 권한으로 초대해 주세요." | 종료 |
@@ -72,7 +83,7 @@ github.com 작업은 안 된다. 실제로 마주친 사례라 이 확인을 생
 > 3. 브라우저에 그 코드를 입력하고, **회사 GitHub 계정**으로 로그인한 뒤 Authorize를 누르세요."
 
 ```bash
-gh auth login --hostname github.com --git-protocol https --web
+gh auth login --hostname $HOST --git-protocol https --web
 ```
 
 화면에 나온 **한 번 쓰는 코드는 원문 그대로 보여준다** — 사용자가 읽어서 입력해야 하는
@@ -82,7 +93,7 @@ gh auth login --hostname github.com --git-protocol https --web
 
 1. **브라우저가 자동으로 열리지 않는다.** 코드와 URL만 화면에 찍힌다. 그대로 두면
    사용자는 실패한 줄 알고 멈춘다. 코드를 크게 다시 적어 주고, macOS면
-   `open "https://github.com/login/device"`, Windows면 `start ...` 로 **대신 열어 준다.**
+   `open "https://$HOST/login/device"`, Windows면 `start ...` 로 **대신 열어 준다.**
 2. **명령이 2분을 넘기면 백그라운드로 내려간다.** 실패가 아니라 승인을 기다리는
    중이다. "터미널 쪽은 계속 기다리고 있으니, 브라우저를 닫았다 다시 열어도 괜찮아요"라고
    알려 주고, **다른 터미널에서 다시 실행하지 말라고 명시한다** — 코드가 하나 더 생겨
@@ -91,12 +102,12 @@ gh auth login --hostname github.com --git-protocol https --web
 로그인이 끝나면:
 
 ```bash
-gh auth setup-git --hostname github.com
-gh auth status --hostname github.com
+gh auth setup-git --hostname $HOST
+gh auth status --hostname $HOST
 ```
 
-`--hostname github.com` 을 붙인다 — 회사 자체 GitHub 서버가 함께 등록돼 있을 때 그쪽
-설정을 건드리지 않기 위해서다.
+`--hostname $HOST` 를 붙인다 — 서버가 여러 개 등록돼 있을 때 **다른 서버 설정을 건드리지
+않기 위해서다.**
 
 > "이제 이 컴퓨터에서는 로그인 없이 올리기·받아오기가 됩니다."
 
@@ -109,8 +120,16 @@ gh auth status --hostname github.com
 
 - **브라우저가 안 열림**: 화면에 나온 URL을 그대로 보여주고 직접 열도록 안내.
 - **개인 계정으로 로그인함**: `gh auth logout` 후 Step 3을 다시, "회사 계정으로"를 강조.
-- **회사 자체 GitHub(Enterprise)**: 주소가 `github.com`이 아니면 저장소를 만든 사람에게 서버 주소를
-  물어보게 하고, 받은 값으로 `--hostname`을 바꿔 재실행.
+- **회사 자체 GitHub 서버**: 위 흐름이 그대로 통한다 (실측 확인 — GitHub Enterprise Server
+  3.17에서 브라우저 로그인·`setup-git`·`git push`·`gh pr` 전부 정상 동작). 목표 서버는
+  Step 1에서 저장소 주소로부터 자동으로 정해지므로 사용자에게 서버 주소를 묻지 않는다 —
+  `origin`이 없을 때만 묻는다.
+  - 저장소 폴더 *안에서* 실행하면 `gh`가 주소를 보고 서버를 알아서 찾는다. 폴더 밖에서
+    실행해야 한다면 `GH_HOST=<호스트>` 를 앞에 붙인다 (`--hostname`을 안 받는 하위 명령이
+    있다).
+  - **브라우저 로그인을 막아 둔 회사 서버**라면 (`--web` 실패) 거기서 멈추고 회사의 GitHub
+    담당자에게 문의하도록 안내한다. **토큰을 손으로 발급받는 절차는 안내하지 않는다** —
+    비개발자가 혼자 안전하게 끝낼 수 있는 일이 아니다.
 
 ## Rules
 
