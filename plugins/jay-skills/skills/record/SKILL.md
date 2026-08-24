@@ -1,6 +1,6 @@
 ---
 name: record
-description: Log important work or decisions to docs/memories/ for future reference. Triggered automatically by /jay-skills:commit on big changes, or you can run it manually.
+description: 중요한 작업·결정을 나중에 찾아볼 수 있게 docs/memories/ 에 기록으로 남깁니다. "기록으로 남겨줘" / "오늘 한 일 정리해서 기록해줘" / "이 결정 적어둬" 할 때 사용. 큰 변경이면 /jay-skills:commit 이 알아서 함께 불러줍니다.
 ---
 
 # Record Skill
@@ -45,8 +45,12 @@ Examples:
 
 Before writing, search for earlier notes on the same topic:
 ```bash
-grep -il "{핵심 키워드 1-2개}" docs/memories/*.md
+grep -il "{핵심 키워드 1-2개}" docs/memories/*.md 2>/dev/null
 ```
+
+**`docs/memories/` 폴더가 아직 없거나 비어 있으면** 이 명령은 아무것도 출력하지 않는다
+(`2>/dev/null` 이 에러를 가린다). 그럴 때는 **겹침 없음으로 보고 그대로 Step 3으로**
+간다 — 폴더가 있는지 따로 확인하거나 다른 명령으로 바꿔 시도할 필요가 없다.
 
 - 겹치는 파일이 없거나, 있어도 모순되지 않으면 → 그대로 Step 3.
 - 이전 기록과 **모순**되면 (예: 예전 노트 "매니저 승인 필요" ↔ 이번 변경 "자동 승인"):
@@ -77,7 +81,7 @@ Use this template (skip any section that doesn't apply):
 ```
 
 ### Step 4: Save
-Write the file. Briefly tell the user:
+Write the file (필요하면 `docs/memories/` 폴더를 함께 만든다). Briefly tell the user:
 
 > "기록 저장했어요: `docs/memories/{filename}`"
 

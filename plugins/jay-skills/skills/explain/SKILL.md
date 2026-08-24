@@ -1,6 +1,6 @@
 ---
 name: explain
-description: Get a plain-language explanation of any code, file, error message, or change. Useful when something looks confusing or scary.
+description: 어려운 파일·코드·에러 메시지·변경 내용을 쉬운 말로 풀어서 설명합니다. "이 파일 뭐예요?" / "이 에러 무슨 뜻이에요?" / "방금 뭐가 바뀐 거예요?" / "이거 고쳐도 괜찮아요?" 할 때 사용. 걱정할 일인지, 직접 고쳐도 되는지, 멈추고 팀에 물어볼 일인지까지 알려줘요.
 ---
 
 # Explain Skill

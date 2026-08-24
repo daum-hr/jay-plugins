@@ -44,11 +44,12 @@ Claude Code를 열고, 채팅창에 아래를 **한 줄씩** 입력하세요.
 |---|---|
 | `/jay-skills:welcome` | 맨 처음 한 번 — 준비 상태 확인 |
 | `/jay-skills:status` | 지금 무슨 상태인지 모를 때 (제일 먼저 눌러보는 버튼) |
-| `/jay-skills:commit` | 작업을 내 컴퓨터에 저장 |
-| `/jay-skills:push` | 저장한 작업을 팀 저장소(GitHub)에 올리기 |
-| `/jay-skills:pull` | 동료가 올린 최신 작업 받아오기 |
+| `/jay-skills:commit` | 작업을 내 컴퓨터에 커밋(기록) |
+| `/jay-skills:push` | 커밋한 작업을 팀 저장소(GitHub)에 push |
+| `/jay-skills:pull` | 동료가 올린 최신 작업 pull로 받아오기 |
 | `/jay-skills:fix-conflict` | 충돌(같은 곳을 두 사람이 고침) 정리 |
-| `/jay-skills:pr` | 동료에게 확인 요청 올리기 · 확인되면 합치기 |
+| `/jay-skills:pr` | 내 작업을 동료에게 확인 요청(PR)으로 올리기 · 확인되면 merge |
+| `/jay-skills:review-pr` | 동료가 보낸 확인 요청(PR) 검토하기 · 승인 · 의견 남기기 |
 | `/jay-skills:github-login` | GitHub 연결이 안 될 때 |
 | `/jay-skills:undo` | 실수 되돌리기 |
 | `/jay-skills:explain` | 어려운 파일·에러 메시지를 쉬운 말로 |
