@@ -42,7 +42,7 @@ Claude Code를 열고, 채팅창에 아래를 **한 줄씩** 입력하세요.
 
 | 도구 | 언제 쓰나요 |
 |---|---|
-| `/jay-skills:welcome` | 맨 처음 한 번 — 준비 상태 확인 |
+| `/jay-skills:welcome` | 맨 처음 한 번 — 준비 상태 확인 · 팀 저장소 받아오기(clone) |
 | `/jay-skills:status` | 지금 무슨 상태인지 모를 때 (제일 먼저 눌러보는 버튼) |
 | `/jay-skills:commit` | 작업을 내 컴퓨터에 커밋(기록) |
 | `/jay-skills:push` | 커밋한 작업을 팀 저장소(GitHub)에 push |
