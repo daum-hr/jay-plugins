@@ -23,11 +23,11 @@ git diff --name-only --diff-filter=U 2>&1
 git status --porcelain 2>&1
 ```
 
-- **`MERGE_HEAD` 있음** → 합치는 중. 이 스킬의 기본 경로.
-- **`rebase-merge` / `rebase-apply` 있음** → 우리가 시작하지 않은 재정렬 작업이다.
+- **`MERGE_HEAD` 있음** → merge 중. 이 스킬의 기본 경로.
+- **`rebase-merge` / `rebase-apply` 있음** → 우리가 시작하지 않은 rebase 작업이다.
   **이어서 진행하지 않는다.** AskUserQuestion:
 
-  > "진행 중인 '이력 재정렬(rebase)' 작업이 있는데, 이건 이 도구가 시작한 게 아니에요.
+  > "진행 중인 rebase(이력 재정렬) 작업이 있는데, 이건 이 도구가 시작한 게 아니에요.
   > ① 취소하고 원래 상태로 되돌리기 (권장 — 아무것도 잃지 않아요)
   > ② 그대로 두고 팀에 물어보기"
 

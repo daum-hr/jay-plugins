@@ -1,6 +1,6 @@
 ---
 name: github-login
-description: GitHub 연결이 안 될 때 — push가 거부됐거나, 비밀번호를 안 받아주거나, 처음 연결할 때 사용. "GitHub이 비밀번호를 안 받아줘요" / "로그인 좀 해줘" / "권한이 없대요" / "403" / "Authentication failed" 같은 상황을 진단하고, 브라우저로 한 번 로그인해서 해결합니다. push·pull·pr 스킬이 인증 문제를 만나면 여기로 넘깁니다. 네트워크가 안 닿는 것(VPN)은 인증 문제와 구분해서 안내해요. 저장소를 아직 안 받아온 상태에서도 로그인할 수 있어요.
+description: GitHub 연결이 안 될 때 — push가 거부됐거나, 비밀번호를 안 받아주거나, 처음 연결할 때 사용. "GitHub이 비밀번호를 안 받아줘요" / "로그인 좀 해줘" / "권한이 없대요" / "403" / "Authentication failed" 같은 상황을 진단하고, 브라우저로 한 번 로그인해서 해결합니다. push·pull·pr 스킬이 인증 문제를 만나면 여기로 넘깁니다. 네트워크가 안 닿는 것(VPN)은 인증 문제와 구분해서 안내해요. 저장소를 아직 clone하지 않은 상태에서도 로그인할 수 있어요.
 ---
 
 # GitHub 연결하기 (github-login)
@@ -59,7 +59,7 @@ gh api user --hostname $HOST --jq .login 2>/dev/null
 전에 미리 알린다**: "GitHub 서버 연결을 확인할게요 — 몇 초 걸릴 수 있어요." 오래 걸린 끝에
 실패했다면 인증부터 의심하지 말고 Step 2의 **연결 실패 행**부터 본다.
 
-**팀 저장소 주소(`origin`)가 없을 때도 그냥 돌려보내지 않는다.** 아직 받아오기 전이라
+**팀 저장소 주소(`origin`)가 없을 때도 그냥 돌려보내지 않는다.** 아직 clone 전이라
 `origin`이 없는 것뿐일 수 있고, 그 사람에게 필요한 게 바로 로그인이다. `welcome`으로
 돌려보내면 그쪽은 다시 여기로 보내서 **두 스킬 사이를 왕복하게 된다.** 대신 한 번 묻는다:
 
@@ -69,9 +69,9 @@ gh api user --hostname $HOST --jq .login 2>/dev/null
 
 ① → 받은 주소에서 호스트를 뽑아 `$HOST`로 삼고 **그대로 Step 2·3을 진행한다**
 (`case "$HOST" in *.*) ;; *) HOST=github.com ;; esac` — `owner/repo` 형태면 github.com).
-로그인이 끝나면 받아오기는 `/jay-skills:welcome`의 Step 2.5가 이어받는다.
+로그인이 끝나면 clone은 `/jay-skills:welcome`의 Step 2.5가 이어받는다.
 ② → 여기서 끝낸다: "저장소를 만든 동료에게 주소를 물어봐 주세요. 주소가 생기면
-`/jay-skills:welcome`으로 받아오기까지 한 번에 해드립니다."
+`/jay-skills:welcome`으로 clone까지 한 번에 해드립니다."
 
 ### Step 2: 증상별 진단
 

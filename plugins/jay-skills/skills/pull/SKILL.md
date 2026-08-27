@@ -3,7 +3,7 @@ name: pull
 description: 동료들이 팀 저장소에 올린 최신 작업(커밋)을 pull로 받아옵니다. "풀 해줘" / "당겨와줘" / "최신으로 받아와줘" / "동료가 올린 것 좀" / "동료 작업 가져와줘" / push가 "먼저 받아오세요(fetch first)"라며 거부됐을 때 사용. 받아오다가 충돌(같은 곳을 두 사람이 고침)이 나면 fix-conflict로 자연스럽게 이어집니다. 받아오기 전에 상황을 먼저 보여주고 진행해요.
 ---
 
-# 최신 작업 받아오기 (pull)
+# pull — 최신 작업 받아오기
 
 비개발자를 위한 "동료 작업 가져오기". pull(동료가 팀 저장소에 올린 작업을 내 컴퓨터로
 받아오는 것)은 실제로는 fetch + merge지만, 사용자에게는 하나의 행동으로 보여준다.
@@ -32,7 +32,7 @@ git log --oneline @{u}..HEAD 2>/dev/null   # 내가 아직 안 올린 것
 git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=15 fetch 2>&1
 ```
 
-- 이미 합치는 중이면(`MERGE_HEAD` 등) 새로 받아오지 않는다 → `/jay-skills:fix-conflict`.
+- 이미 merge 중이면(`MERGE_HEAD` 등) 새로 받아오지 않는다 → `/jay-skills:fix-conflict`.
 - 팀 저장소 미연결 → "받아올 곳이 아직 연결 안 돼 있어요" → `/jay-skills:welcome`.
 - **`fetch` 실패는 `git-collab.md` §3 번역표로 먼저 분류한다** — 맨 윗줄부터 본다.
   네트워크(연결 실패)면 그 자리에서 VPN 안내 후 **정지**하고 `github-login`으로 보내지
@@ -61,7 +61,7 @@ AskUserQuestion:
 > ② stash에 잠깐 치워두기 (받아온 뒤 자동으로 다시 꺼내드려요)
 > ③ 그만두기"
 
-② → `git stash push -m "pull 전 임시 보관"`. 받아온 뒤 `git stash pop`으로 되돌리고,
+② → `git stash push -m "pull 전 stash"`. 받아온 뒤 `git stash pop`으로 되돌리고,
 그때 충돌이 나면 `/jay-skills:fix-conflict`로 넘기되 라벨을 "치워뒀던 내 작업" /
 "방금 받아온 내용"으로 바꿔 쓰라고 알려준다.
 
@@ -73,8 +73,8 @@ AskUserQuestion:
 git pull --no-rebase
 ```
 
-`--no-rebase`를 항상 명시한다 — 사용자 컴퓨터의 설정이 재정렬(rebase) 방식으로 되어
-있어도 이 도구는 언제나 merge 방식으로 간다 (`git-collab.md` §5의 이유).
+`--no-rebase`를 항상 명시한다 — 사용자 컴퓨터의 설정이 rebase(이력 재정렬) 방식으로
+되어 있어도 이 도구는 언제나 merge 방식으로 간다 (`git-collab.md` §5의 이유).
 
 - **깨끗하게 merge됨** → Step 5.
 - **충돌 발생** → 겁주지 말고 이렇게 알린다:

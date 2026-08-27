@@ -49,10 +49,10 @@ command -v gh >/dev/null && gh auth status 2>&1     # 참고용 (판정은 --hos
 > 해주는 도구인데, 이 폴더엔 그 기록장이 없는 상태예요.
 > - 템플릿 zip을 풀어서 시작하신 거라면 → `/jay-skills:welcome`을 먼저 실행하세요.
 > - 원래 GitHub에 있는 프로젝트인데 **웹에서 'Download ZIP'으로 받으셨다면** 이력이
->   통째로 빠진 사본이라 올리기(push)가 안 돼요. 저장소를 만든 동료에게 '내려받기(clone)'
->   주소를 물어보시는 게 가장 빠릅니다."
+>   통째로 빠진 사본이라 push가 안 돼요. 저장소를 만든 동료에게 clone(이력까지 통째로
+>   복사해 오는 것) 주소를 물어보시는 게 가장 빠릅니다."
 
-**(b) 합치는 중 / 재정렬 중** (`.git/MERGE_HEAD` 또는 `rebase-*` 존재)
+**(b) merge 중 / rebase 중** (`.git/MERGE_HEAD` 또는 `rebase-*` 존재)
 
 → 상세 설명 없이 `/jay-skills:fix-conflict`로 넘긴다. 그 스킬이 중단·정리를 모두 담당한다.
 
@@ -62,8 +62,8 @@ command -v gh >/dev/null && gh auth status 2>&1     # 참고용 (판정은 --hos
 > 브랜치에도 붙지 않고 나중에 찾기 어려워집니다."
 
 커밋 안 된 변경이 있으면 구조 옵션을 AskUserQuestion으로 제시한다: ① 지금 작업을 새
-브랜치에 안전하게 담기(`git switch -c rescue/{날짜}`) ② 원래 브랜치로 돌아가기(변경은
-함께 따라감) ③ 그대로 두고 팀에 물어보기. 깨끗하면 ①은 빼고 제시한다.
+브랜치에 안전하게 담기(`git switch -c rescue/{날짜}`) ② 원래 브랜치로 switch해서
+돌아가기(변경은 함께 따라감) ③ 그대로 두고 팀에 물어보기. 깨끗하면 ①은 빼고 제시한다.
 
 ### Step 3: 상태를 쉬운 한국어로 보고
 
@@ -90,10 +90,10 @@ command -v gh >/dev/null && gh auth status 2>&1     # 참고용 (판정은 --hos
 | 내 컴퓨터에만 있는 커밋 있음 | `/jay-skills:push` — 팀 저장소로 push |
 | 팀 저장소 미연결 | `/jay-skills:welcome` 또는 `/jay-skills:push`(주소 물어봄) |
 | `gh` 미설치·미로그인 + 올릴 게 있음 | `/jay-skills:github-login` |
-| 충돌·합치는 중 | `/jay-skills:fix-conflict` |
+| 충돌 · merge 중 | `/jay-skills:fix-conflict` |
 | 뭔가 잘못 커밋한 것 같다 | `/jay-skills:undo` |
 | 내가 push한 작업을 확인받고 싶다 | `/jay-skills:pr` |
-| 동료가 보낸 확인 요청(PR)을 봐야 한다 | `/jay-skills:review-pr` |
+| 동료가 보낸 PR을 봐야 한다 | `/jay-skills:review-pr` |
 | 에러 메시지가 git과 무관 | `/jay-skills:explain` |
 
 `git-collab.md` §2 마무리 카드로 끝낸다.

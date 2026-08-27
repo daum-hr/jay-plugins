@@ -3,7 +3,7 @@ name: pr
 description: 지금 브랜치의 작업을 팀 최종본(main)에 merge해도 될지 동료에게 확인 요청(PR — Pull Request)으로 올립니다. 제목·설명을 한국어로 자동 작성해서 보여주고, 확인 후 GitHub에 올려요. 아직 push 안 한 작업이 있으면 push까지 함께 처리합니다. 이미 올라간 PR이 있으면 상태를 보여주고, 동료 확인이 끝났으면 merge까지 도와줍니다. "확인 요청해줘" / "PR 올려줘" / "이제 합쳐줘" 할 때 사용. 동료가 보낸 PR을 *검토*하는 건 review-pr 입니다.
 ---
 
-# 확인 요청 올리기 (pr)
+# PR 올리기 (pr)
 
 PR(Pull Request)은 **"내 작업을 팀 최종본(main)에 합쳐도 될까요"라고 동료에게 올리는
 확인 요청**이다 — 이 한 줄로 설명하고 시작한다. 그다음부터는 그냥 **PR**이라고 부른다.
@@ -36,7 +36,7 @@ gh pr view --json url,state,mergeable,mergeStateStatus,reviewDecision 2>/dev/nul
 VPN 안내 후 **정지**한다.
 
 - **`gh` 없음** → 설치 안내만 하고 끝낸다 (자동 설치 금지):
-  > "확인 요청을 올리려면 `gh`라는 GitHub 도구가 필요해요. **Mac**: `brew install gh`
+  > "PR을 올리려면 `gh`라는 GitHub 도구가 필요해요. **Mac**: `brew install gh`
   > / **Windows**: `winget install GitHub.cli`. 설치 후 `/jay-skills:pr`을 다시
   > 실행해 주세요. 지금까지 작업은 아무것도 바뀌지 않았어요."
 - **미로그인** → `/jay-skills:github-login` → 끝나면 여기로 돌아온다.
