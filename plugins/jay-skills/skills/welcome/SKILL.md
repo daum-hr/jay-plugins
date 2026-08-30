@@ -228,6 +228,24 @@ gh auth status 2>&1                        # 전체 그림 (참고용)
 이어서 마무리 카드(`git-collab.md` §2)로 닫고, 다음에 할 수 있는 것을 안내한다:
 작업 → `/jay-skills:commit` → `/jay-skills:push`로 공유. 막히면 `/jay-skills:explain`.
 
+**이 폴더가 실행할 앱을 갖고 있으면 한 가지만 더 묻는다.** 판정은 두 가지 중 하나면
+충분하다 — `package.json`에 `scripts.dev` 또는 `scripts.start`가 있거나, README에 개발환경
+안내 섹션이 있거나.
+
+```bash
+[ -f package.json ] && grep -qE '"(dev|start)"[[:space:]]*:' package.json && echo has-app
+grep -qiE '^#+.*(개발환경|시작하기|Getting Started)' README.md 2>/dev/null && echo has-doc
+```
+
+둘 다 아니면 **이 질문 자체를 건너뛴다.** 해당하면 AskUserQuestion:
+
+> "이어서 개발환경까지 준비해 드릴까요? Node 확인 → 라이브러리 설치 → 서버 켜기까지 해서
+> 브라우저로 화면을 볼 수 있게 돼요.
+> ① 네, 이어서 해주세요 ② 나중에 — '서버 켜줘'라고 하시면 언제든지"
+
+① → `/jay-skills:dev-up`. 설치가 필요한 일은 **전부 그쪽에서 다시 동의를 받는다** — 이
+스킬은 여전히 아무것도 설치하지 않는다.
+
 ## Rules
 
 - **확인만 하고 자동 설치는 하지 않는다** (git, `gh` 모두). 설치 안내 → 사용자가 설치 →

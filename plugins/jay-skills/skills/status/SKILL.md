@@ -94,6 +94,7 @@ command -v gh >/dev/null && gh auth status 2>&1     # 참고용 (판정은 --hos
 | 뭔가 잘못 커밋한 것 같다 | `/jay-skills:undo` |
 | 내가 push한 작업을 확인받고 싶다 | `/jay-skills:pr` |
 | 동료가 보낸 PR을 봐야 한다 | `/jay-skills:review-pr` |
+| 서버가 안 뜬다 · 포트가 사용 중 · 화면이 안 열린다 | `/jay-skills:dev-up` |
 | 에러 메시지가 git과 무관 | `/jay-skills:explain` |
 
 `git-collab.md` §2 마무리 카드로 끝낸다.
