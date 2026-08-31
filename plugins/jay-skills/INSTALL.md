@@ -110,7 +110,7 @@ Claude Code를 열고, 채팅창에 아래를 **한 줄씩** 입력하세요.
 
 ```bash
 mkdir -p ~/.claude/skills
-unzip ~/Downloads/jay-skills-v0.4.0.zip -d ~/.claude/skills/
+unzip ~/Downloads/jay-skills-v0.4.1.zip -d ~/.claude/skills/
 ```
 
 **Windows** — 파일 탐색기 주소창에 `%USERPROFILE%\.claude\skills` 를 입력해 그 폴더로

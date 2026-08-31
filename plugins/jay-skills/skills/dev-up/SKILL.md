@@ -32,6 +32,7 @@ description: 프로젝트를 브라우저에서 실제로 볼 수 있게 개발�
 
 ```bash
 uname                                    # Darwin 인가
+cat .claude/launch.json 2>/dev/null      # 데스크탑 앱 서버 연동 설정 (있으면 이게 정본)
 cat package.json 2>/dev/null
 grep -hE '^PORT=' .env .env.example 2>/dev/null    # .env 는 이 줄만 본다
 cat .nvmrc 2>/dev/null
@@ -40,9 +41,12 @@ cat .nvmrc 2>/dev/null
 README에서 개발환경 안내를 찾는다 (`개발환경`/`시작하기`/`Getting Started`/`설치`).
 **있으면 그 문서가 우선이다** — 거기 적힌 명령·포트·"정상인 메시지" 목록을 그대로 따른다.
 
+- **실행할 명령·포트** — `.claude/launch.json`이 있으면 **그 파일이 정본이다**
+  (`runtimeExecutable` + `runtimeArgs` = 명령, `port` = 포트). 다른 문서와 어긋나면
+  launch.json을 따르고 그 사실을 알린다. 없으면 `scripts.dev`/`scripts.start`,
+  포트는 `.env`의 `PORT` → `.env.example` → README 순.
 - **Node 버전** — `package.json`의 `volta.node` → `engines.node` → `.nvmrc`
-- **실행할 명령** — `scripts.setup` / `scripts.dev` / `scripts.start`
-- **포트** — `.env`의 `PORT` → `.env.example` → README
+- **준비 스크립트** — `scripts.setup`
 
 `package.json`도 README 개발환경 안내도 없으면 멈춘다: "이 폴더에는 아직 실행할 앱이
 없어요. 받아오는 중이라면 `/jay-skills:welcome` 부터, 이미 받았는데 이 메시지가 나오면
@@ -210,8 +214,16 @@ sleep 3; lsof -nP -iTCP:{P} -sTCP:LISTEN 2>/dev/null    # 아직 살아 있나
 
 ### Step 6: 서버 켜기 + 접속 확인
 
-대화가 끝나도 떠 있도록 백그라운드로 띄운다. 기록은 저장소 **바깥**에 남긴다 — 안에 두면
-커밋할 파일 목록이 지저분해진다.
+**먼저 갈림길 하나.** 이 세션에 **앱의 개발 서버 기능**(데스크탑 앱 전용 — 서버를
+만들고 켜는 도구)이 있으면 **그것으로 띄운다.** 아래 nohup 방식을 쓰지 않는다 —
+앱으로 띄워야 서버 목록에서 켜고 끄기, 브라우저 패널 미리보기가 함께 작동한다.
+`.claude/launch.json`이 이미 있으면 그 설정 그대로, 없으면 앱이 만들게 두되
+**절대경로가 들어가지 않게** 명령 이름(`npm` 등)만 쓰게 한다. 띄운 뒤 아래
+접속 확인부터 이어서 한다.
+
+그 기능이 없으면(터미널에서 도는 세션) 기존 방식으로 간다 — 대화가 끝나도 떠 있도록
+백그라운드로 띄운다. launch.json이 있으면 **그 안의 명령과 포트를 그대로 쓴다.**
+기록은 저장소 **바깥**에 남긴다 — 안에 두면 커밋할 파일 목록이 지저분해진다.
 
 ```bash
 export PATH="$HOME/.volta/bin:$PATH"
@@ -241,6 +253,16 @@ curl -s -o /dev/null -w '%{http_code}' "http://localhost:{P}"
 
 성공하면 **말하고 나서** 브라우저를 연다: "브라우저를 열어드릴게요 —
 http://localhost:{실제 번호}" → `open "http://localhost:{실제 번호}"`
+
+**`.claude/launch.json`이 없었다면** 성공 직후 한 번만 제안한다 (AskUserQuestion):
+
+> "데스크탑 앱과 연동되는 서버 설정 파일(`.claude/launch.json`)을 만들어 둘까요?
+> 팀 저장소에 넣으면 동료들은 받자마자 앱의 서버 목록에서 켤 수 있어요.
+> ① 만들어 주세요 ② 아니요"
+
+① 이면 방금 확인한 명령·포트로 만든다 — **절대경로 금지, 명령 이름만** (컴퓨터마다
+경로가 달라서), `"autoPort": true` 포함, 시크릿 넣지 않기. 만들었으면 git에 잡히는
+새 파일이라는 것을 알린다 (커밋은 `/jay-skills:commit`).
 
 ## 실패했을 때 (번역표)
 
@@ -287,5 +309,7 @@ git 상태를 바꾸지 않는 흐름이므로 마무리 카드(§2)는 붙이�
 - `sudo` 쓰지 않는다. `npm install -g` 하지 않는다. localhost 밖으로 나가지 않는다.
 - 모든 명령은 `export PATH="$HOME/.volta/bin:$PATH"` 로 시작한다.
 - **여러 번 실행해도 안전해야 한다.** 이미 떠 있으면 확인만 하고 끝낸다.
-- **git 상태를 바꾸지 않는다.** 설치가 잠금 파일을 바꾸면 그 사실만 알린다.
+- **git 상태를 바꾸지 않는다.** 설치가 잠금 파일을 바꾸면 그 사실만 알린다. 유일한
+  예외는 `.claude/launch.json` 생성 — 물어보고 동의받아 만들며, 만들었음을 알린다.
+- launch.json에 **절대경로와 시크릿을 넣지 않는다.** 명령 이름만 — 커밋되는 파일이다.
 - 에러 원문은 줄이거나 바꿔 쓰지 않는다. 그대로 보여준 뒤 쉬운 말을 덧붙인다.
